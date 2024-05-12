@@ -1,5 +1,5 @@
 
-# JUnit Coverage Report
+# Pytest: JUnit Coverage Report
 
 ![licence](https://img.shields.io/github/license/xportation/junit-coverage-report) ![version](https://img.shields.io/github/package-json/v/xportation/junit-coverage-report)
 
@@ -167,6 +167,6 @@ The default template is below:
 {{/if}}
 ```
 
-## Alternative Action
+## Alternative GH Action
 This project was strongly inspired by the [Pytest Coverage Comment](https://github.com/MishaKav/pytest-coverage-comment)  
 It's a great alternative project. You should consider it 🖤.
