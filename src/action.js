@@ -15,17 +15,23 @@ const loadFile = (filePath) => {
   return getFileContent(filePath);
 }
 
-const getPullRequestFilesUrl = () => {
+const getPullRequestFilesUrl = (projectDir) => {
   const { context, repository } = github;
   const { payload } = context;
   const { repo, owner } = context.repo;
   const _repository = repository || `${owner}/${repo}`
   const commit = payload.pull_request.head.sha;
-  return `https://github.com/${_repository}/blob/${commit}`;
+  return `https://github.com/${_repository}/blob/${commit}/${projectDir}`;
 }
 
-const generateReport = (junitFileContent, coverageFileContent, customTemplateFileContent) => {
-  const repositoryUrl = getPullRequestFilesUrl();
+const generateReport = (
+  junitFileContent, 
+  coverageFileContent, 
+  customTemplateFileContent, 
+  projectDir, 
+  projectName
+) => {
+  const repositoryUrl = getPullRequestFilesUrl(projectDir);
   const coverageData = getCoverageData(coverageFileContent);
   const junitData = getJUnitData(junitFileContent);
   return getReport(junitData, coverageData, repositoryUrl, customTemplateFileContent);
