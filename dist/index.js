@@ -37985,7 +37985,7 @@ const template =
   "<img alt=\"Coverage\" src=\"{{coverage.badge}}\" />" +
   "<br/>" +
   "<details>" +
-  "    <summary>Coverage Report for {{ metadata.projectName }}</summary>" +
+  "    <summary>Coverage Report for {{metadata.projectName}}</summary>" +
   "    <table>" +
   "        <tr>" +
   "            <th>File</th>" +
