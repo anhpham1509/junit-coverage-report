@@ -38363,12 +38363,12 @@ const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 const { addPullRequestComment } = __nccwpck_require__(6545);
 
-const loadFile = (filePath) => {
+const loadFile = (filePath, projectDir) => {
   if (!filePath) {
     return null;
   }
 
-  filePath = filePath.startsWith("/") ? filePath : `${process.env.GITHUB_WORKSPACE}/${filePath}`;
+  filePath = filePath.startsWith("/") ? filePath : `${process.env.GITHUB_WORKSPACE}/${projectDir}/${filePath}`;
   return getFileContent(filePath);
 }
 
@@ -38408,8 +38408,8 @@ async function main() {
     const projectDir = core.getInput("project-dir", { required: false });
     const projectName = core.getInput("project-name", { required: false });
 
-    const junitFileContent = loadFile(junitPath);
-    const coverageFileContent = loadFile(coveragePath);
+    const junitFileContent = loadFile(junitPath, projectDir);
+    const coverageFileContent = loadFile(coveragePath, projectDir);
     const customTemplateFileContent = loadFile(templatePath);
 
     const report = generateReport(
