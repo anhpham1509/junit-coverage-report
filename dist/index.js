@@ -37985,7 +37985,7 @@ const template =
   "<img alt=\"Coverage\" src=\"{{coverage.badge}}\" />" +
   "<br/>" +
   "<details>" +
-  "    <summary>Coverage Report</summary>" +
+  "    <summary>Coverage Report for {{ metadata.projectName }}</summary>" +
   "    <table>" +
   "        <tr>" +
   "            <th>File</th>" +
@@ -38124,7 +38124,13 @@ const buildJunitInfo = (junitData) => {
   return { tests, skipped, failures, errors, time, failuresItems };
 };
 
-const getReport = (junitData, coverageData, repositoryUrl, templateContent) => {
+const getReport = (
+  junitData,
+  coverageData,
+  repositoryUrl,
+  templateContent,
+  projectName
+) => {
   let coverage;
   if (coverageData) {
     coverage = buildCoverageInfo(coverageData, repositoryUrl);
@@ -38134,13 +38140,15 @@ const getReport = (junitData, coverageData, repositoryUrl, templateContent) => {
     junit = buildJunitInfo(junitData);
   }
 
+  metadata = { projectName };
+
   let render;
   if (templateContent) {
     render = Handlebars.compile(templateContent);
   } else {
     render = Handlebars.compile(template);
   }
-  return render({ coverage, junit });
+  return render({ coverage, junit, metadata });
 };
 
 module.exports = { getReport };
@@ -38364,20 +38372,26 @@ const loadFile = (filePath) => {
   return getFileContent(filePath);
 }
 
-const getPullRequestFilesUrl = () => {
+const getPullRequestFilesUrl = (projectDir) => {
   const { context, repository } = github;
   const { payload } = context;
   const { repo, owner } = context.repo;
   const _repository = repository || `${owner}/${repo}`
   const commit = payload.pull_request.head.sha;
-  return `https://github.com/${_repository}/blob/${commit}`;
+  return `https://github.com/${_repository}/blob/${commit}/${projectDir}`;
 }
 
-const generateReport = (junitFileContent, coverageFileContent, customTemplateFileContent) => {
-  const repositoryUrl = getPullRequestFilesUrl();
+const generateReport = (
+  junitFileContent, 
+  coverageFileContent, 
+  customTemplateFileContent, 
+  projectDir, 
+  projectName
+) => {
+  const repositoryUrl = getPullRequestFilesUrl(projectDir);
   const coverageData = getCoverageData(coverageFileContent);
   const junitData = getJUnitData(junitFileContent);
-  return getReport(junitData, coverageData, repositoryUrl, customTemplateFileContent);
+  return getReport(junitData, coverageData, repositoryUrl, customTemplateFileContent, projectName);
 }
 
 async function main() {
@@ -38391,12 +38405,20 @@ async function main() {
     const junitPath = core.getInput("junit-path", { required: false });
     const coveragePath = core.getInput("coverage-path", { required: false });
     const templatePath = core.getInput("template-path", { required: false });
+    const projectDir = core.getInput("project-dir", { required: false });
+    const projectName = core.getInput("project-name", { required: false });
 
     const junitFileContent = loadFile(junitPath);
     const coverageFileContent = loadFile(coveragePath);
     const customTemplateFileContent = loadFile(templatePath);
 
-    const report = generateReport(junitFileContent, coverageFileContent, customTemplateFileContent);
+    const report = generateReport(
+      junitFileContent,
+      coverageFileContent,
+      customTemplateFileContent,
+      projectDir,
+      projectName
+    );
     await addPullRequestComment(token, report);
   }
 }
