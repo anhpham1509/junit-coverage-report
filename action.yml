@@ -1,6 +1,6 @@
-name: 'Junit Coverage Report'
-description: 'Comment a pull request with unit tests and coverage reports'
-author: 'Leonardo Vitor da Silva'
+name: 'Junit Coverage Report (with monorepo support)'
+description: 'Comment a pull request with unit tests and coverage reports (with monorepo support). Extending [Junit Coverage Report](https://github.com/marketplace/actions/junit-coverage-report)'
+author: 'Anh Pham'
 branding:
   icon: 'square'
   color: 'purple'
