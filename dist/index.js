@@ -38041,7 +38041,7 @@ const template =
   "</table>" +
   "<br/>" +
   "{{#if junit.failuresItems}}" +
-  "## Test Report Summary for {{metadata.projectName}}" +
+  "<h2>Test Report Summary for {{metadata.projectName}}</h2>"+
   "<details>" +
   "    <summary>Unit Failures</summary>" +
   "    <table>" +
