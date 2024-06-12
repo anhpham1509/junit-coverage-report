@@ -15,23 +15,25 @@ const loadFile = (filePath, projectDir) => {
   return getFileContent(filePath);
 }
 
-const getPullRequestFilesUrl = (projectDir) => {
+const getPullRequestFilesUrl = (projectDir, projectCoverageDir) => {
   const { context, repository } = github;
   const { payload } = context;
   const { repo, owner } = context.repo;
   const _repository = repository || `${owner}/${repo}`
   const commit = payload.pull_request.head.sha;
-  return `https://github.com/${_repository}/blob/${commit}/${projectDir}`;
+  const suffix = projectDir && projectCoverageDir ? `${projectDir}/${projectCoverageDir}` : projectDir;
+  return `https://github.com/${_repository}/blob/${commit}/${suffix}`;
 }
 
 const generateReport = (
   junitFileContent, 
   coverageFileContent, 
   customTemplateFileContent, 
-  projectDir, 
-  projectName
+  projectName,
+  projectDir,
+  projectCoverageDir
 ) => {
-  const repositoryUrl = getPullRequestFilesUrl(projectDir);
+  const repositoryUrl = getPullRequestFilesUrl(projectDir, projectCoverageDir);
   const coverageData = getCoverageData(coverageFileContent);
   const junitData = getJUnitData(junitFileContent);
   return getReport(junitData, coverageData, repositoryUrl, customTemplateFileContent, projectName);
@@ -50,6 +52,7 @@ async function main() {
     const templatePath = core.getInput("template-path", { required: false });
     const projectDir = core.getInput("project-dir", { required: false });
     const projectName = core.getInput("project-name", { required: false });
+    const projectCoverageDir = core.getInput("project-coverage-dir", { required: false });
 
     const junitFileContent = loadFile(junitPath, projectDir);
     const coverageFileContent = loadFile(coveragePath, projectDir);
@@ -59,8 +62,9 @@ async function main() {
       junitFileContent,
       coverageFileContent,
       customTemplateFileContent,
+      projectName,
       projectDir,
-      projectName
+      projectCoverageDir
     );
     console.log("report: ");
     console.log(report);
