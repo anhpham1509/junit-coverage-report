@@ -34,7 +34,7 @@ const generateReport = (
   const repositoryUrl = getPullRequestFilesUrl(projectDir);
   const coverageData = getCoverageData(coverageFileContent);
   const junitData = getJUnitData(junitFileContent);
-  return getReport(junitData, coverageData, repositoryUrl, customTemplateFileContent);
+  return getReport(junitData, coverageData, repositoryUrl, customTemplateFileContent, projectName);
 }
 
 async function main() {

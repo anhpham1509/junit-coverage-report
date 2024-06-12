@@ -7,7 +7,7 @@ const template =
   "<img alt=\"Coverage\" src=\"{{coverage.badge}}\" />" +
   "<br/>" +
   "<details>" +
-  "    <summary>Coverage Report</summary>" +
+  "    <summary>Coverage Report for {{ metadata.projectName }}</summary>" +
   "    <table>" +
   "        <tr>" +
   "            <th>File</th>" +
@@ -146,7 +146,13 @@ const buildJunitInfo = (junitData) => {
   return { tests, skipped, failures, errors, time, failuresItems };
 };
 
-const getReport = (junitData, coverageData, repositoryUrl, templateContent) => {
+const getReport = (
+  junitData,
+  coverageData,
+  repositoryUrl,
+  templateContent,
+  projectName
+) => {
   let coverage;
   if (coverageData) {
     coverage = buildCoverageInfo(coverageData, repositoryUrl);
@@ -156,13 +162,15 @@ const getReport = (junitData, coverageData, repositoryUrl, templateContent) => {
     junit = buildJunitInfo(junitData);
   }
 
+  metadata = { projectName };
+
   let render;
   if (templateContent) {
     render = Handlebars.compile(templateContent);
   } else {
     render = Handlebars.compile(template);
   }
-  return render({ coverage, junit });
+  return render({ coverage, junit, metadata });
 };
 
 module.exports = { getReport };
