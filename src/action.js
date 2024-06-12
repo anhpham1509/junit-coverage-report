@@ -42,6 +42,8 @@ async function main() {
     const junitPath = core.getInput("junit-path", { required: false });
     const coveragePath = core.getInput("coverage-path", { required: false });
     const templatePath = core.getInput("template-path", { required: false });
+    const projectDir = core.getInput("project-dir", { required: false });
+    const projectName = core.getInput("project-name", { required: false });
 
     const junitFileContent = loadFile(junitPath);
     const coverageFileContent = loadFile(coveragePath);

@@ -21,6 +21,16 @@ inputs:
     default: './coverage.xml'
     required: false
 
+  project-dir:
+    description: 'Project directory in monorepo'
+    default: ''
+    required: false
+
+  project-name:
+    description: 'Project name to show in comment'
+    default: ${{ github.repository }}
+    required: false
+
   template-path:
     description: 'Custom template file path'
     required: false
