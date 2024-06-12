@@ -55,7 +55,13 @@ async function main() {
     const coverageFileContent = loadFile(coveragePath);
     const customTemplateFileContent = loadFile(templatePath);
 
-    const report = generateReport(junitFileContent, coverageFileContent, customTemplateFileContent);
+    const report = generateReport(
+      junitFileContent,
+      coverageFileContent,
+      customTemplateFileContent,
+      projectDir,
+      projectName
+    );
     await addPullRequestComment(token, report);
   }
 }
