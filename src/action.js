@@ -62,7 +62,9 @@ async function main() {
       projectDir,
       projectName
     );
-    await addPullRequestComment(token, report);
+    console.log("report: ");
+    console.log(report);
+    await addPullRequestComment(token, report, projectName);
   }
 }
 
