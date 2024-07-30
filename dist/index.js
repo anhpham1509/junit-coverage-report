@@ -37823,7 +37823,9 @@ const parseXml = (coverageXml) => {
       parsePackage(p, files);
     }
   } else {
-    parsePackage(coverageXml.packages.package, files);
+    if (coverageXml.packages) {
+      parsePackage(coverageXml.packages.package, files);
+    }
   }
   return files;
 };
