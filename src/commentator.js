@@ -1,11 +1,11 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 
-const addPullRequestComment = async (githubToken, message) => {
+const addPullRequestComment = async (githubToken, message, projectName) => {
   const { context } = github;
   const { repo, owner } = context.repo;
   const { payload } = context;
-  const WATERMARK = `<!-- junit coverage report: ${context.job} -->\n`;
+  const WATERMARK = `<!-- junit coverage report: ${context.job}--${projectName} -->\n`;
   const issueNumber = payload.pull_request ? payload.pull_request.number : 0;
   const commentBody = WATERMARK + message;
 
