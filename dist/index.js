@@ -37716,11 +37716,11 @@ function wrappy (fn, cb) {
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 
-const addPullRequestComment = async (githubToken, message) => {
+const addPullRequestComment = async (githubToken, message, projectName) => {
   const { context } = github;
   const { repo, owner } = context.repo;
   const { payload } = context;
-  const WATERMARK = `<!-- junit coverage report: ${context.job} -->\n`;
+  const WATERMARK = `<!-- junit coverage report: ${context.job}--${projectName} -->\n`;
   const issueNumber = payload.pull_request ? payload.pull_request.number : 0;
   const commentBody = WATERMARK + message;
 
