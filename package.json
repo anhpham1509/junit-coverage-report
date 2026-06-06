@@ -9,6 +9,9 @@
   },
   "author": "Leonardo Vitor da Silva",
   "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
   "devDependencies": {
     "@vercel/ncc": "^0.33.4",
     "jest": "^28.1.0",
